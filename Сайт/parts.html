@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Технічні деталі — 3D-PRINT STUDIO</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .parts-container { padding: 50px 5%; text-align: center; }
+        .selection-box { 
+            background: white; padding: 30px; border-radius: 15px; 
+            max-width: 500px; margin: 0 auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        select, input { 
+            width: 100%; padding: 12px; margin: 10px 0; 
+            border: 1px solid #ccc; border-radius: 5px; font-size: 16px;
+        }
+        .total-msg { background: #f9f9f9; padding: 15px; border-radius: 5px; margin-top: 20px; font-style: italic; color: #555; }
+        
+        /* Розносимо кнопку та напис по краях */
+        header {
+            display: flex;
+            justify-content: space-between !important;
+            align-items: center;
+            padding: 15px 5%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" style="color: white; text-decoration: none; padding: 10px;">← На головну</a>
+        <div class="logo">⚙️ КАТАЛОГ ТЕХНІЧНИХ ДЕТАЛЕЙ</div>
+    </header>
+
+    <div class="parts-container">
+        <h1>Конструктор технічних деталей</h1>
+        <p>Оберіть стандартні параметри для замовлення</p>
+
+        <div class="selection-box">
+            <label>Тип деталі:</label>
+            <select id="partType" onchange="updateMessage()">
+                <option value="гвинт">Гвинт (метричний)</option>
+                <option value="шестерня">Шестерня (прямозуба)</option>
+                <option value="гайка">Гайка</option>
+                <option value="шайба">Шайба</option>
+            </select>
+
+            <label>Розмір (М):</label>
+            <select id="partSize" onchange="updateMessage()">
+                <option value="М3">М3</option>
+                <option value="М4">М4</option>
+                <option value="М5">М5</option>
+                <option value="М6">М6</option>
+                <option value="М8">М8</option>
+                <option value="М10">М10</option>
+            </select>
+
+            <label>Довжина / Параметри (мм):</label>
+            <input type="text" id="partLength" placeholder="наприклад: 30х40" value="20" oninput="updateMessage()">
+
+            <div class="total-msg" id="previewText">
+                Доброго дня, хотів би замовити гвинт М3 довжиною 20 мм.
+            </div>
+
+            <button onclick="sendToTG()" class="btn" style="width: 100%; margin-top: 20px; border: none; cursor: pointer; background: #2c3e50; color: white; padding: 12px; border-radius: 6px;">
+                Замовити через Telegram
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function updateMessage() {
+            const type = document.getElementById('partType').value;
+            const size = document.getElementById('partSize').value;
+            const length = document.getElementById('partLength').value;
+            
+            const msg = `Доброго дня, хотів би замовити ${type} ${size} на ${length} мм`;
+            document.getElementById('previewText').innerText = msg;
+        }
+
+        function sendToTG() {
+            const text = document.getElementById('previewText').innerText;
+            const encodedText = encodeURIComponent(text);
+            window.open(`https://t.me/Master3dmanager?text=${encodedText}`, '_blank');
+        }
+    </script>
+</body>
+</html>
